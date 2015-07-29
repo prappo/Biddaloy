@@ -1,0 +1,145 @@
+th {
+	text-align: center;
+}
+
+.value {
+	color: #C7CBD7;
+}
+
+.clsDatePicker {
+    z-index: 100000;
+}
+
+.principal_panel{
+	background-color: #F56954;
+	color: #dddddd;
+}
+
+.teachers_panel {
+	background-color: #00A65A;
+	color: #dddddd;
+}
+
+.students_panel {
+	background-color: #0073B7;
+	color: #dddddd;
+}
+
+.notices_panel {
+	background-color: #00C0EF;
+	color: #dddddd;
+}
+
+.panel-footer {
+	background-color: #9DA7B1;
+	color: #244265;
+	font-weight: 700;
+	font-size: 12px;
+	transition: all .3s;
+}
+
+.panel-footer:hover {
+	background-color: #D3D3D3;
+	color: #244265;
+}
+
+.profile_image {
+	padding-bottom: 20px;
+}
+.profile_name {
+	padding-top: 80px;
+}
+
+.add-new {
+	color: #dddddd;
+	background-color: #2A3542;
+	margin-top:-5px;
+	margin-right: 15px;
+	-webkit-transition: all .3s;
+	   -moz-transition: all .3s;
+		 -o-transition: all .3s;
+			transition: all .3s;
+}
+
+.add-new:hover {
+	color: white;
+}
+.btn-full {
+	color: #dddddd;
+	background-color: #2A3542;
+	-webkit-transition: all .3s;
+	   -moz-transition: all .3s;
+	    -ms-transition: all .3s;
+	     -o-transition: all .3s;
+	        transition: all .3s;
+}
+
+.btn-full:hover {
+	color: white;
+}
+
+.add-routine {
+	margin-top: 2px;
+}
+
+div#principalsData div.alert {
+	margin-top: 15px;
+}
+
+.principal-add-button {
+	color: #dddddd;
+	background-color: #2A3542;
+	margin-top:-5px;
+	margin-right: 15px;
+	-webkit-transition: all .3s;
+	   -moz-transition: all .3s;
+		 -o-transition: all .3s;
+			transition: all .3s;
+}
+
+.principal-add-button:hover {
+	color: white;
+}
+
+.principalHeadingImage {
+	width: 150px;
+	height: 150px;
+	margin-left: 14px;
+	margin-bottom: 10px;
+}
+
+#principalsEditForm {
+	margin-top: 10px;
+}
+
+.dataTableAvatar {
+	width: 30px;
+	height: 30px;
+}
+
+#editModalLoadingImg, #viewModalLoadingImg {
+	position: absolute;
+	left: 45%;
+	top: 10%;
+}
+
+#editModalLoadingImg img, #viewModalLoadingImg img{
+	width: 30px;
+	height: 30px;
+}
+
+.hide {
+	display: none;
+}
+
+ul li {
+	cursor: pointer;
+}
+
+.download-csv {
+	text-align: center;
+}
+
+.upload-csv input[name=addTeacherCSV] {
+	margin-top: 10px;
+}
