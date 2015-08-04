@@ -160,13 +160,14 @@ class SchoolManagement {
 			return false;
 	}
 
-	public function setUserDataField($request, $type) {
+	public function setUserDataField($request, $config) {
 		$this->data = [
 			'full_name'			=> $request['full_name'],
 			'username'			=> $request['username'],
-			'type'				=> $type,
+			'type'				=> $config['type'],
 			'email'				=> $request['email'],
 			'registration_date' => date("Y-m-d"),
+			'image'				=> $request['username'].'.'.$config['extension']
 		];
 
 		(isset($request['password']) && $request['password'] != NULL)
@@ -291,35 +292,19 @@ class SchoolManagement {
 	}
 
 	private function saveProfileImage($config) {
-		$img_file = $config['file'][key($config['file'])];
+		$check = save_user_image($config['file'], [
+			'name'   => $config['username'],
+			'width'  => 140,
+			'height' => 140
+		]);
 
-		if(is_uploaded_file($img_file['tmp_name'])) {
-			$mime = getimagesize($tmp_name);
-			$allowed = ['jpg', 'jpeg', 'png', 'gif'];
-
-			$image_name = $img_file['name'];
-			$tmp_name   = $img_file['tmp_name'];
-
-			$img = $config['username'].'.'.pathinfo($image_name)['extension'];
-			$image = $config['image_path'].$img;
-
-			if(in_array(pathinfo($image_name)['extension'], $allowed)) {
-				if(in_array('image', explode('/', $mime['mime']))) {
-					move_uploaded_file($tmp_name, $image);
-					$resize = new imageResize($image);
-					$resize->resize(140, 140);
-					$resize->save();
-					return true;
-		    	} else {
-		      		return false;
-		    	}
-		  	} else {
-			    return false;
-			}
-		}
+		$this->status = ($check) ? TRUE : FALSE;
 	}
 	
 	public function sendProfileData($config) {
+		$ext  = pathinfo($config['file']['name'])['extension'];
+		$this->data['image'] = $config['username'].'.'.$ext;
+
 		if($config['action'] == 'add') {
 			$this->saveProfileImage($config);
 
@@ -337,78 +322,6 @@ class SchoolManagement {
 			return $this;
 		}
 	}
-
-	// public function sendProfileData($config) {
-	// 	if($config['action'] == 'add') {			//for adding new profile
-	// 		if($config['type'] == 'principal') {		//for adding new principal profile
-				
-	// 			$this->saveProfileImage($config);		//saving profile image
-
-	// 			if($this->status)
-	// 				$this->status = db_insert('scl_principal', $this->data);
-	// 			return $this;
-	// 		} elseif($config['type'] == 'teacher') {	//for adding new teacher profile
-				
-	// 			$this->saveProfileImage($config);		//saving profile image
-
-	// 			if($this->status)
-	// 				$this->status = db_insert('scl_teachers', $this->data);
-	// 			return $this;
-	// 		} elseif($config['type'] == 'student') {
-
-	// 			$this->saveProfileImage($config);		//saving profile image
-
-	// 			if($this->status)
-	// 				$this->status = db_insert('scl_students', $this->data);
-	// 			return $this;
-	// 		} elseif($config['type'] == 'parent') {
-
-	// 			$this->saveProfileImage($config);		//saving profile image
-
-	// 			if($this->status)
-	// 				$this->status = db_insert('scl_parents', $this->data);
-	// 			return $this;
-	// 		}
-	// 	} elseif($config['action'] == 'edit') {				//for editing profile data
-	// 		if($config['type'] == 'principal') {		//for principal's profile
-				
-	// 			$this->saveProfileImage($config);		//saving profile image
-				
-	// 			if($this->status)
-	// 				$this->status = db_update('scl_principal', $this->data, [
-	// 					'username' => $config['username']
-	// 				]);
-	// 			return $this;
-	// 		} elseif($config['type'] == 'teacher') {	//for teacher's profile
-				
-	// 			$this->saveProfileImage($config);		//saving profile image
-
-	// 			if($this->status)
-	// 				$this->status = db_update('scl_teachers', $this->data, [
-	// 					'username' => $config['username']
-	// 				]);
-	// 			return $this;
-	// 		} elseif($config['type'] == 'student') {	//for student's profile
-				
-	// 			$this->saveProfileImage($config);		//saving profile image
-
-	// 			if($this->status)
-	// 				$this->status = db_update('scl_students', $this->data, [
-	// 					'username' => $config['username']
-	// 				]);
-	// 			return $this;
-	// 		} elseif($config['type'] == 'parent') {	//for parent's profile
-				
-	// 			$this->saveProfileImage($config);		//saving profile image
-
-	// 			if($this->status)
-	// 				$this->status = db_update('scl_parents', $this->data, [
-	// 					'username' => $config['username']
-	// 				]);
-	// 			return $this;
-	// 		}
-	// 	}
-	// }
 
 	public function matchPassword($request) {
 		$this->status = ($request['newPassword'] == $request['reTypePassword']) ? true : false;

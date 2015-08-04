@@ -1,44 +1,35 @@
 <?php
 global $schoolManagement, $pdo;
 if(isset($_POST['addNewStudent'])) {
-    
-    $userConfig = [
-    'type'      => 'student',
-    ];
-    
     $config = [
         'table' => 'vor_admin',
         'where' => ['username' => $_POST['student_username']]
     ];
 
     if($schoolManagement->is_row_exists($config)) {
-        $config = [
-            'table' => 'vor_admin',
-            'where' => ['username' => $_POST['parent_username']]
-        ];
-
-        if($schoolManagement->is_row_exists($config))
-            echo '<script>userNameExists()</script>';
+        echo '<script>userNameExists()</script>';
     } else {
         //students
         $image_path = get_plugin_dir().'/images/students/';
         $config = [
             'action'      => 'add',
             'type'        => 'student',
-            'image_path'  => $image_path,
-            'file'        => $_FILES,
+            'file'        => $_FILES['add-student-image'],
             'username'    => $_POST['student_username'],
+            'table'       => 'scl_students',
+            'extension'   => pathinfo($_FILES['add-student-image']['name'])['extension']
         ];
 
         $_POST['full_name'] = $_POST['student_full_name'];
         $_POST['username']  = $_POST['student_username'];
         $_POST['password']  = $_POST['student_username'];
         $_POST['email']     = $_POST['student_email'];
+        $_POST['parent_username'] = $_POST['parent_username'];
 
         $schoolManagement
         ->setStudentData($_POST)
         ->sendProfileData($config)
-        ->setUserDataField($_POST, $userConfig)
+        ->setUserDataField($_POST, $config)
         ->createUser();
         
         //parents
@@ -46,25 +37,28 @@ if(isset($_POST['addNewStudent'])) {
         $config = [
             'action'      => 'add',
             'type'        => 'parent',
-            'image_path'  => $image_path,
-            'file'        => $_FILES,
+            'file'        => $_FILES['add-parent-image'],
             'username'    => $_POST['parent_username'],
+            'table'       => 'scl_parents',
+            'extension'   => pathinfo($_FILES['add-parent-image']['name'])['extension']
+
         ];
 
         $_POST['full_name'] = $_POST['parent_full_name'];
         $_POST['username']  = $_POST['parent_username'];
         $_POST['password']  = $_POST['parent_username'];
         $_POST['email']     = $_POST['parent_email'];
+        $_POST['child_username'] = $_POST['student_username'];
 
         $schoolManagement
         ->setParentData($_POST)
         ->sendProfileData($config)
-        ->setUserDataField($_POST, $userConfig)
+        ->setUserDataField($_POST, $config)
         ->createUser();
         
         if($schoolManagement->status) {
             echo '<script>profileaAdded()</script>';
-            echo "<meta http-equiv='refresh' content='1;url='>";
+            // echo "<meta http-equiv='refresh' content='1;url='>";
         } else {
             echo '<script>error()</script>';
         }
@@ -189,7 +183,7 @@ if(isset($_POST['addNewStudent'])) {
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="parent-gender">Gender:</label>
                         <div class="col-lg-4">
-                            <select name="parent-gender" class="form-control" id="parent-gender">
+                            <select name="parent_gender" class="form-control" id="parent-gender">
                                 <optgroup label="Select Gender">
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>

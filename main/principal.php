@@ -2,15 +2,11 @@
 global $schoolManagement, $pdo;
 $principal_info = $schoolManagement->principal_data()->get();
 
-$image = (file_exists(get_plugin_dir().'/images/principal/'.$principal_info['image']))
-  ? get_plugin_dir().'/images/principal/'.$principal_info['image']
-  : get_plugin_dir().'/images/default_image.png';
-
-$image_path = get_plugin_dir().'/images/principal/';
+$image = (file_exists('img/user/'.$principal_info['image']))
+    ? 'img/user/'.$principal_info['image'] : 'img/user/default_image.png';
 
 $config = [
     'table'       => 'scl_principal',
-    'image_path'  => $image_path,
     'type'        => 'principal',
 ];
 
@@ -18,9 +14,9 @@ if(isset($_POST['editPrincipalsData'])) {
 $configg = [
     'action'      => 'edit',
     'type'        => 'principal',
-    'image_path'  => $image_path,
-    'file'        => $_FILES,
+    'file'        => $_FILES['edit-principal-image'],
     'username'    => $_POST['username'],
+    'extension'   => pathinfo($_FILES['edit-principal-image']['name'])['extension']
 ];
 
 $config = array_merge($configg, $config);
@@ -28,7 +24,7 @@ $config = array_merge($configg, $config);
 $schoolManagement
     ->setPrincipalData($_POST)
     ->sendProfileData($config)
-    ->setUserDataField($_POST, $config['type'])
+    ->setUserDataField($_POST, $config)
     ->updateUser();
 
 if($schoolManagement->status) {
@@ -52,9 +48,9 @@ if($schoolManagement->status) {
         $configg = [
             'action'      => 'add',
             'type'        => 'principal',
-            'image_path'  => $image_path,
-            'file'        => $_FILES,
+            'file'        => $_FILES['add-principal-image'],
             'username'    => $_POST['username'],
+            'extension'   => pathinfo($_FILES['add-principal-image']['name'])['extension']
         ];
 
         $config = array_merge($configg, $config);
@@ -62,7 +58,7 @@ if($schoolManagement->status) {
         $schoolManagement
             ->setPrincipalData($_POST)
             ->sendProfileData($config)
-            ->setUserDataField($_POST, $config['type'])
+            ->setUserDataField($_POST, $config)
             ->createUser();
 
         if($schoolManagement->status) {

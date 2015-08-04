@@ -2,19 +2,18 @@
 global $schoolManagement, $pdo;
 $teachers_data = $schoolManagement->teachers_data()->get();
 $plugin_url = 'http://'.dirname($_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']).'/plugins/'.get_plugin_name();
-$image_path = get_plugin_dir().'/images/teachers/';
 
 $config = [
     'table'       => 'scl_teachers',
-    'image_path'  => $image_path,
     'type'        => 'teacher',
 ];
 
 if(isset($_POST['editTeacherData'])) {
     $configg = [
         'action'      => 'edit',
-        'file'        => $_FILES,
+        'file'        => $_FILES['edit-teacher-image'],
         'username'    => $_POST['username'],
+        'extension'   => pathinfo($_FILES['edit-teacher-image']['name'])['extension']
     ];
 
     $config = array_merge($configg, $config);
@@ -22,7 +21,7 @@ if(isset($_POST['editTeacherData'])) {
     $schoolManagement
     ->setTeacherData($_POST)
     ->sendProfileData($config)
-    ->setUserDataField($_POST, $config['type'])
+    ->setUserDataField($_POST, $config)
     ->updateUser();
 
     if($schoolManagement->status) {
@@ -66,8 +65,9 @@ if(isset($_POST['editTeacherData'])) {
     } else {
         $configg = [
             'action'      => 'add',
-            'file'        => $_FILES,
+            'file'        => $_FILES['add-teacher-image'],
             'username'    => $_POST['username'],
+            'extension'   => pathinfo($_FILES['add-teacher-image']['name'])['extension']
         ];
 
         $config = array_merge($configg, $config);
@@ -75,7 +75,7 @@ if(isset($_POST['editTeacherData'])) {
         $schoolManagement
         ->setTeacherData($_POST)
         ->sendProfileData($config)
-        ->setUserDataField($_POST, $config['type'])
+        ->setUserDataField($_POST, $config)
         ->createUser();
         if($schoolManagement->status) {
             echo '<script>profileaAdded()</script>';
@@ -159,10 +159,9 @@ if(isset($_POST['editTeacherData'])) {
                                         <tbody>
                                             <?php
                                             foreach($teachers_data as $teacher_data) :
-                                            $image = (!empty($teacher_data['image']))
-                                            ? 'plugins/'.get_plugin_name().'/images/teachers/'
-                                            .$teacher_data['image']
-                                            : 'plugins/'.get_plugin_name().'/images/default_image.png' ;
+                                                $image = (!empty($teacher_data['image']))
+                                                ? 'img/user/'.$teacher_data['image']
+                                                : 'img/user/default_image.png';
                                             ?>
                                             <tr>
                                                 <td><img class="dataTableAvatar img-circle" src="<?php echo $image; ?>"
@@ -240,7 +239,7 @@ if(isset($_POST['editTeacherData'])) {
                         <h4 class="modal-title" id="viewModalLabel"></h4>
                     </div>
                     <div id="viewModalLoadingImg">
-                        <img src="<?php echo 'plugins/'.get_plugin_name().'/images/loading.gif'; ?>">
+                        <img src="<?php echo 'img/user/loading.gif'; ?>">
                     </div>
                     <div class="modal-body" id="viewProfileModalBody">
                         <div class="col-md-3 col-lg-3 profile_image" align="center">
@@ -300,7 +299,7 @@ if(isset($_POST['editTeacherData'])) {
                             <h4 class="modal-title" id="editModalLabel">Edit Profile</h4>
                         </div>
                         <div id="editModalLoadingImg">
-                            <img src="<?php echo 'plugins/'.get_plugin_name().'/images/loading.gif'; ?>">
+                            <img src="<?php echo 'img/user/loading.gif'; ?>">
                         </div>
                         <div class="modal-body" id="editModalBody">
                             <div class="row">

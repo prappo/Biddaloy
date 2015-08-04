@@ -31,14 +31,14 @@ $(function() {
                     var profileImg = $('#viewProfile_img');
                     $('div.modal-header h4#viewModalLabel').text(data.full_name+'\'s profile');
                     
-                    profileImg.attr('src', $this.data('url')+'/images/teachers/'+data.image);
+                    profileImg.attr('src', 'img/user/'+data.image);
                     //default image if not set
                     if(data.image == '') {
-                        profileImg.attr('src', $this.data('url')+'/images/default_image.png');
+                        profileImg.attr('src', 'img/user/default_image.png');
                     }
                     //default image if any error
                     profileImg.error(function() {
-                        profileImg.attr('src', $this.data('url')+'/images/default_image.png');
+                        profileImg.attr('src', 'img/user/default_image.png');
                     });
 
                     table.find('td#viewProfile_username').text(data.username);
@@ -75,14 +75,14 @@ $(function() {
                     var profileImg = $('#editProfile_img');
                     $('#editModalLabel').text(data.full_name+'\'s profile');
                     
-                    profileImg.attr('src', $this.data('url')+'/images/teachers/'+data.image);
+                    profileImg.attr('src', 'img/user/'+data.image);
                     //default image if not set
                     if(data.image == '') {
-                        profileImg.attr('src', $this.data('url')+'/images/default_image.png');
+                        profileImg.attr('src', 'img/user/default_image.png');
                     }
                     //default image if any error
                     profileImg.error(function() {
-                        profileImg.attr('src', $this.data('url')+'/images/default_image.png');
+                        profileImg.attr('src', 'img/user/default_image.png');
                     });
                     
                     form.find('input#editProfile_username').val(data.username);
