@@ -1,7 +1,7 @@
 #Biddaloy
 
-# What is Biddaloy?
-A plugin to manage school's data for VOR { } software platform
+# School managment plugin for VOR {}
 
+Please visit below for more details
 #VOR { }
 [VOR](https://github.com/prappo/vor)
